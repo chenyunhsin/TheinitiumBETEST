@@ -2,8 +2,10 @@ from django.contrib import admin
 
 from django.contrib.auth.admin import UserAdmin
 from .models import CustomUser
+from .forms import CustomUserChangeForm
 
 class CustomUserAdmin(UserAdmin):
-    list_display = ('username', 'email', 'is_staff', 'is_employee')
+    form = CustomUserChangeForm
+    fieldsets = UserAdmin.fieldsets + (('Custom fields', {'fields': ('is_employee',)}),)
 
 admin.site.register(CustomUser, CustomUserAdmin)
