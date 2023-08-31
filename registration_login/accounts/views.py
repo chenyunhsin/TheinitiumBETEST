@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login
-
+from .forms import CustomUserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 from django.contrib.auth import logout
@@ -27,3 +27,14 @@ def user_logout(request):
 @login_required
 def employee_page(request):
     return render(request, 'employee_page.html')
+
+def register(request):
+    if request.method == "POST":
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return render(request, 'employee_page.html')
+    else:
+        form = CustomUserCreationForm()
+    return render(request, "register.html", {"form": form})
